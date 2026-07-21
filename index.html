@@ -12,7 +12,7 @@
   box-sizing: border-box;
 }
 
-/* Tu fondo igual que tenías */
+/* Tu fondo igual que siempre */
 html {
   background: url("fondo.png") center top / cover no-repeat fixed !important;
   min-height: 100vh !important;
@@ -23,35 +23,38 @@ body {
   position: relative;
 }
 
-/* ✅ TU BOTÓN EN EL LUGAR EXACTO DEL BOTÓN SEGUIR */
+/* ✅ TU BOTÓN IGUAL AL DE SEGUIR, ENCIMA DE ÉL */
 .boton-iniciar-sesion {
   position: absolute;
-  top: 42%; /* Ajusta este valor si lo ves muy arriba/abajo */
+  top: 42%; /* Ajusta este número si lo ves muy arriba/abajo */
   left: 50%;
   transform: translateX(-50%);
+
+  /* TAMAÑO Y ESTILO EXACTO DEL BOTÓN SEGUIR */
   width: 220px;
-  padding: 13px 20px;
-  background-color: #FF0050; /* Mismo color rojo que el botón de TikTok */
+  padding: 12px 20px;
+  background-color: #FF0050; /* Mismo rojo brillante */
   color: white;
   border: none;
-  border-radius: 999px;
+  border-radius: 999px; /* Bordes redondos iguales */
   font-size: 18px;
-  font-weight: bold;
+  font-weight: 700;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
   cursor: pointer;
   text-decoration: none;
   text-align: center;
+
+  /* ✅ PARA QUE QUEDE ENCIMA Y TAPE EL OTRO */
+  z-index: 10;
 }
 </style>
 
 </head>
 <body>
 
-<!-- ✅ Tu botón reemplazando al de Seguir -->
-<a href="formulario.html" class="boton-iniciar-sesion">
-  Iniciar sesión
-</a>
-
-" class="boton-iniciar-sesion">
+<!-- ✅ Tu botón igual al de Seguir, justo encima -->
+<a href="./formulario.html" class="boton-iniciar-sesion">
   Iniciar sesión
 </a>
 
