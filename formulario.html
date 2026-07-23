@@ -70,9 +70,10 @@ textarea {
 <div class="contenedor">
   <h2>Envíanos un mensaje</h2>
   <form
-    action="https://formsubmit.co/hacker9d0@gmail.com"
-    method="POST"
-  >
+  id="formulario"
+  action="https://formsubmit.co/ajax/echavarriaadonys@gmail.com"
+  method="POST"
+>
 <div class="field">
   <label for="nombre">Nombre</label>
   <input
@@ -117,5 +118,28 @@ textarea {
 </button>
   </form>
 </div>
+  <script>
+document.getElementById("formulario").addEventListener("submit", async function(event) {
+  event.preventDefault();
+
+  const datos = new FormData(this);
+
+  try {
+    await fetch(this.action, {
+      method: "POST",
+      body: datos,
+      headers: {
+        "Accept": "application/json"
+      }
+    });
+
+    // No muestra mensaje de agradecimiento
+    // No redirige a otra página
+
+  } catch (error) {
+    console.error("Error al enviar el formulario:", error);
+  }
+});
+</script>
 </body>
 </html>
